@@ -26,22 +26,15 @@ export const PizzasProvider = ({ children }) => {
         if (findProductIndex >= 0) {
             cart[findProductIndex].count++;
             setCart([...cart]);
-        } else {
+        } else { 
             setCart([...cart, pruduct]);
         }
     }
-    const increment = (index) => {
-        cart[index].count++;
-        setCart([...cart]);
-    }
-    const decrement = (index) => {
-        if (cart[index].count === 1) {
-            cart.splice(index, 1);
-        } else {
-            cart[index].count--;
-        }
-        setCart([...cart]);
-    }
+    const removeFromCart = (pizzaId) => {
+        const updatedCart = cart.filter((item) => item.id !== pizzaId);
+        setCart(updatedCart);
+    };
+    
     const total = cart.reduce((acc, item) => acc + (item.price * item.count), 0);
 
     const PizzasProviderValues={
@@ -50,8 +43,7 @@ export const PizzasProvider = ({ children }) => {
         loading,
         setCart,
         addToCart,
-        increment,
-        decrement,
+        removeFromCart,
         total
     }
 
