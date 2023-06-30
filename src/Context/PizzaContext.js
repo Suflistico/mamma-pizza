@@ -7,7 +7,6 @@ export const PizzasProvider = ({ children }) => {
     const [cart, setCart] = useState([]);
 
     const { data, loading} = useFetch('/pizzas.json');
-    console.log(data);
     useEffect(() => {
         if (data) {
             setPizzas(data);
@@ -35,6 +34,24 @@ export const PizzasProvider = ({ children }) => {
         setCart(updatedCart);
     };
     
+    const increaseQuantity = (pizzaId) => {
+        const updatedCart = cart.map((item) => {
+          if (item.id === pizzaId) {
+            return { ...item, count: item.count + 1 };
+          }
+          return item;
+        });
+        setCart(updatedCart);
+      };      
+      const decreaseQuantity = (pizzaId) => {
+        const updatedCart = cart.map((item) => {
+          if (item.id === pizzaId) {
+            return { ...item, count: item.count - 1 };
+          }
+          return item;
+        });
+        setCart(updatedCart);
+      };          
     const total = cart.reduce((acc, item) => acc + (item.price * item.count), 0);
 
     const PizzasProviderValues={
@@ -43,6 +60,8 @@ export const PizzasProvider = ({ children }) => {
         loading,
         setCart,
         addToCart,
+        increaseQuantity,
+        decreaseQuantity,
         removeFromCart,
         total
     }
